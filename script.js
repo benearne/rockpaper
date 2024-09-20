@@ -37,10 +37,8 @@ function playGame() {
         } else {
             humanScore ++;
         }
-
         rounds ++;
     }
-
 }
 
 playGame()
