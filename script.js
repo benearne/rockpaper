@@ -13,44 +13,87 @@ function getComputerChoice() {
         return sissors
 }
 
-function getHumanChoice() {
-    let user = prompt("type your choice: ")
-    return user;
-}
-
 var humanScore = 0
 var computerScore = 0
+var rounds = 1
 
-function playGame() {
-    let rounds = 0
 
-    while (rounds < 5) {
-        var humanChoice = getHumanChoice();
-        var computerChoice = getComputerChoice();
+
+const rock = document.getElementById("rock")
+const paper = document.getElementById("paper")
+const sissors = document.getElementById("sissors")
+
+rock.addEventListener("click", () => playRound("rock"))
+paper.addEventListener("click", () => playRound("paper"))
+sissors.addEventListener("click", () => playRound("sissors"))
+
+let human = document.getElementById("human")
+let computer = document.getElementById("computer")
+
+let counts = document.getElementById("rounds")
+let winner = document.getElementById("winner")
+let score = document.getElementById("score")
+let end = document.getElementById("end")
+
+let again = document.getElementById("again")
+
+function playRound(human) {
+
+    var humanChoice = human;
+    human.innerHTML = "Human chose " + human
+
+    var computerChoice = getComputerChoice();
+    computer.innerHTML = "Computer chose " + computerChoice
+    
+    counts.innerHTML = "Rounds played: " + rounds;
+
+    if (humanChoice == computerChoice) {
+        winner.innerHTML = "It's a tie!"
+    }
+    else if ((humanChoice == "rock" && computerChoice == "paper") 
+        || (humanChoice == "paper" && computerChoice == "sissors")
+        || (humanChoice == "sissors" && computerChoice == "rock")) {
+           winner.innerHTML = "computer wins!"
+            computerScore ++;
+    } else {
+        winner.innerHTML = "human wins!"
+        humanScore ++;
+    }
+    
+    score.innerHTML = "Score: Human " + humanScore + " points / Computer " + computerScore + " points.";
+    rounds ++;
+
+    if (humanScore == 5 || computerScore == 5) {
+        rock.hidden = true
+        paper.hidden = true
+        sissors.hidden = true
         
-        if (humanChoice == computerChoice) {
+        human.innerHTML = "";
+        computer.innerHTML = "";
+        winner.innerHTML = "";
+        score.innerHTML = "";
+        rounds.innerHTML = "";
+        if (humanScore > computerScore) {
+            end.innerHTML = "HUMAN WINS!";
         }
-        else if ((humanChoice == "rock" && computerChoice == "paper") 
-            || (humanChoice == "paper" && computerChoice == "sissors")
-            || (humanChoice == "sissors" && computerChoice == "rock")) {
-                computerScore ++;
-        } else {
-            humanScore ++;
+        else {
+            end.innerHTML = "COMPUTER WINS!";
         }
-        rounds ++;
+
+        again.hidden = false
     }
 }
 
-playGame()
+document.getElementById("again").addEventListener("click", () => reset_game())
 
-if (humanScore == computerScore) {
-    console.log("its a tie!")
+function reset_game() {
+    var humanScore = 0
+    var computerScore = 0
+    var rounds = 1
+
+    end.innerHTML = "";
+    rock.hidden = false
+    paper.hidden = false
+    sissors.hidden = false
+    again.hidden = true
 }
-else if (humanScore > computerScore) {
-    console.log("human wins!")
-}
-else {
-    console.log("computer wins!")
-}
-console.log("human: " + humanScore + 
-    ' vs. \ncomputer: ' + computerScore)
